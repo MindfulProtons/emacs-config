@@ -96,5 +96,6 @@ Makes the Org bullets nicer. Perhaps to actually make Emacs more visually appeal
 * Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t)
+    :ensure t
+    :bind ("C-x g" . 'magit-status))
 #+END_SRC
