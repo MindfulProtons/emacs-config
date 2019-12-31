@@ -7,20 +7,20 @@ Since this is a literal *window manager* (seriously, I'm still impressed that em
 - =ttf-iosevka=, default font specified in the config, change it in the config for your preferred font of choice.
 *** Telega.el
 - =telegram-tdlib=, available in the AUR.
-* General Emacs settings
-** Removing backup files and autosave
+** General Emacs settings
+*** Removing backup files and autosave
 This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
 #+BEGIN_SRC emacs-lisp
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+END_SRC
 
-** Inhibiting the startup screen, so I don't get bothered by a tutorial
+*** Inhibiting the startup screen, so I don't get bothered by a tutorial
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t)
 #+END_SRC
 
-** Adding an alias for yes/no prompts, setting bash as the default shell
+*** Adding an alias for yes/no prompts, setting bash as the default shell
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
   (defvar default-shell "/bin/bash")
@@ -29,30 +29,30 @@ This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
   (ad-activate 'term)
 #+END_SRC
 
-** Scrolling (making it not move the screen)
+*** Scrolling (making it not move the screen)
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
-* Visual additions
-** Removing ugly toolbar, scrollbar, and menubar from GUI
+** Visual additions
+*** Removing ugly toolbar, scrollbar, and menubar from GUI
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
 #+END_SRC
 
-** Setting line numbers to run solely in programming modes
+*** Setting line numbers to run solely in programming modes
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
-** Font
+*** Font
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
 	       '(font . "Iosevka-10"))
 #+END_SRC
 
-** Base16 themes
+*** Base16 themes
 #+BEGIN_SRC emacs-lisp
   (use-package base16-theme
     :ensure t
@@ -61,7 +61,7 @@ This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
     (load-theme 'base16-tomorrow-night t))
 #+END_SRC
 
-* Org
+** Org
 *** Org bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -69,8 +69,8 @@ This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
-* Generic keybindings
-** Change undo to C-z
+** Generic keybindings
+*** Change undo to C-z
 #+BEGIN_SRC emacs-lisp
   (global-unset-key "\C-z")
   (global-set-key "\C-z" 'undo)
@@ -83,13 +83,13 @@ This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
     (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
   (global-set-key (kbd "C-c r") 'config-reload)
 #+END_SRC
-* Magit
+** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
     :bind ("C-x g" . 'magit-status))
 #+END_SRC
-* EXWM
+** EXWM
 #+BEGIN_SRC emacs-lisp
   (use-package exwm
     :ensure t
@@ -156,7 +156,7 @@ This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
     (exwm-enable)
     (exwm-randr-enable))
 #+END_SRC
-* Telega.el
+** Telega.el
 #+BEGIN_SRC emacs-lisp
   (use-package telega
     :ensure t)
