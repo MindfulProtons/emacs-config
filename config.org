@@ -1,11 +1,21 @@
+#+TITLE: Proton's Emacs Configuration
+* Dependencies
+** EXWM
+Since this is a literal *window manager* (seriously, I'm still impressed that emacs can do this), you need the following:
+- =xorg-server=
+- =alsa-utils=, to control the audio
+- =ttf-iosevka=, works out of the box, you may need to edit the rest of the configuration in order to get it to work properly.
+** Telega.el
+- =telegram-tdlib=, available in the AUR.
 * General Emacs settings
-** Disabling backup files and autosave
+** Removing backup files and autosave
+This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
 #+BEGIN_SRC emacs-lisp
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+END_SRC
 
-** Disable the startup screen
+** Inhibiting the startup screen, so I don't get bothered by a tutorial
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t)
 #+END_SRC
@@ -19,7 +29,7 @@
   (ad-activate 'term)
 #+END_SRC
 
-** More comfortable line-by-line scrolling
+** Scrolling (making it not move the screen)
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
@@ -78,4 +88,76 @@
   (use-package magit
     :ensure t
     :bind ("C-x g" . 'magit-status))
+#+END_SRC
+* EXWM
+#+BEGIN_SRC emacs-lisp
+  (use-package exwm
+    :ensure t
+    :config
+    (require 'exwm-config)
+    (require 'exwm-randr)
+    (setq exwm-workspace-number 10)
+    (setq exwm-randr-workspace-output-plist '(0 "HDMI-A-0" 1 "HDMI-A-0" 2 "HDMI-A-0" 3 "HDMI-A-0" 4 "HDMI-A-0" 5 "DVI-D-0" 6 "DVI-D-0" 7 "DVI-D-0" 8 "DVI-D-0" 9 "DVI-D-0"))
+  
+    ;; Bindings
+    (exwm-input-set-key (kbd "s-r") #'exwm-reset)
+    (exwm-input-set-key (kbd "s-k") #'exwm-workspace-delete)
+    (exwm-input-set-key (kbd "s-w") #'exwm-workspace-swap)
+    (dotimes (i 10)
+      (exwm-input-set-key (kbd (format "s-%d" i))
+			  `(lambda ()
+			     (interactive)
+			     (exwm-workspace-switch-create ,i))))
+    (exwm-input-set-key (kbd "s-d")
+			(lambda (command)
+			  (interactive (list (read-shell-command "$ ")))
+			  (start-process-shell-command command nil command)))
+
+    (push ?\C-q exwm-input-prefix-keys)
+    (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
+
+    (exwm-input-set-simulation-keys
+       '(
+	 ;; movement
+	 ([?\C-b] . left)
+	 ([?\M-b] . C-left)
+	 ([?\C-f] . right)
+	 ([?\M-f] . C-right)
+	 ([?\C-p] . up)
+	 ([?\C-n] . down)
+	 ([?\C-a] . home)
+	 ([?\C-e] . end)
+	 ([?\M-v] . prior)
+	 ([?\C-v] . next)
+	 ([?\C-d] . delete)
+	 ([?\C-k] . (S-end delete))
+	 ;; cut/paste
+	 ([?\C-w] . ?\C-x)
+	 ([?\M-w] . ?\C-c)
+	 ([?\C-y] . ?\C-v)
+	 ;; search
+	 ([?\C-s] . ?\C-f)))
+
+    (dolist (k '(XF86AudioLowerVolume
+		 XF86AudioRaiseVolume
+		 XF86PowerOff
+		 XF86AudioMute
+		 XF86AudioPlay
+		 XF86AudioStop
+		 XF86AudioPrev
+		 XF86AudioNext
+		 XF86ScreenSaver
+		 XF68Back
+		 XF86Forward
+		 Scroll_Lock
+		 print))
+      (cl-pushnew k exwm-input-prefix-keys))
+
+    (exwm-enable)
+    (exwm-randr-enable))
+#+END_SRC
+* Telega.el
+#+BEGIN_SRC emacs-lisp
+  (use-package telega
+    :ensure t)
 #+END_SRC
