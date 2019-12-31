@@ -51,15 +51,14 @@ Since this is a literal *window manager* (seriously, I'm still impressed that em
 	       '(font . "Iosevka-10"))
 #+END_SRC
 
-*** Base16 themes
+*** Gotham
 #+BEGIN_SRC emacs-lisp
-  (use-package base16-theme
+  (use-package gotham-theme
     :ensure t
     :config
-    (setq base16-distinct-fringe-background nil)
-    (load-theme 'base16-tomorrow-night t))
-#+END_SRC
+    (load-theme 'gotham t))
 
+#+END_SRC
 ** Org
 *** Org bullets
 #+BEGIN_SRC emacs-lisp
