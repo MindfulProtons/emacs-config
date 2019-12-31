@@ -79,8 +79,8 @@ Makes the Org bullets nicer. Perhaps to actually make Emacs more visually appeal
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
 * Generic keybindings
-** Correctly setting undo so it's not an arcane binding 
-   Who decided that it should be C-_? My fingers would cry.
+** Change undo to C-z
+   Who decided that it should be C-_? Whining aside, C-z is less taxing on my fingers.
 #+BEGIN_SRC emacs-lisp
   (global-unset-key "\C-z")
   (global-set-key "\C-z" 'undo)
