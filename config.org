@@ -1,12 +1,11 @@
 * General Emacs settings
-** Removing backup files and autosave
-This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
+** Disabling backup files and autosave
 #+BEGIN_SRC emacs-lisp
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+END_SRC
 
-** Inhibiting the startup screen, so I don't get bothered by a tutorial
+** Disable the startup screen
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t)
 #+END_SRC
@@ -20,7 +19,7 @@ This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
   (ad-activate 'term)
 #+END_SRC
 
-** Scrolling (making it not move the screen)
+** More comfortable line-by-line scrolling
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
