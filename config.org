@@ -1,11 +1,11 @@
 #+TITLE: Proton's Emacs Configuration
-* Dependencies
-** EXWM
+** Dependencies
+*** EXWM
 Since this is a literal *window manager* (seriously, I'm still impressed that emacs can do this), you need the following:
 - =xorg-server=
 - =alsa-utils=, to control the audio
-- =ttf-iosevka=, works out of the box, you may need to edit the rest of the configuration in order to get it to work properly.
-** Telega.el
+- =ttf-iosevka=, default font specified in the config, change it in the config for your preferred font of choice.
+*** Telega.el
 - =telegram-tdlib=, available in the AUR.
 * General Emacs settings
 ** Removing backup files and autosave
