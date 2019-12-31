@@ -1,19 +1,17 @@
 * General Emacs settings
 ** Removing backup files and autosave
-This makes makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
+This makes it so emacs isn't constantly leaving files such as '#file#' or ~file.
 #+BEGIN_SRC emacs-lisp
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+END_SRC
 
 ** Inhibiting the startup screen, so I don't get bothered by a tutorial
-No really, if you've already done the tutorial, this isn't really necessary to have. Dashboard works wonders, though.
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t)
 #+END_SRC
 
 ** Adding an alias for yes/no prompts, setting bash as the default shell
-I don't know why emacs forces you to type "yes", but whatever. Bash can be substituted for your preferred shell.
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
   (defvar default-shell "/bin/bash")
@@ -28,7 +26,6 @@ I don't know why emacs forces you to type "yes", but whatever. Bash can be subst
 #+END_SRC
 * Visual additions
 ** Removing ugly toolbar, scrollbar, and menubar from GUI
-Want an ugly toolbar to make emacs easier to use, despite the keyboard focus? No? Then disable them.
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -36,20 +33,17 @@ Want an ugly toolbar to make emacs easier to use, despite the keyboard focus? No
 #+END_SRC
 
 ** Setting line numbers to run solely in programming modes
-I dislike when I have line numbers in terminal modes, but it's damn near essential for actual programming work.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
 ** Font
-Sets to Iosevka, 10 pt. Set it to whatever you like.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
 	       '(font . "Iosevka-10"))
 #+END_SRC
 
 ** Base16 themes
-Some nice themes, I use tomorrow-night, though you can change this to whatever you want.
 #+BEGIN_SRC emacs-lisp
   (use-package base16-theme
     :ensure t
@@ -58,20 +52,8 @@ Some nice themes, I use tomorrow-night, though you can change this to whatever y
     (load-theme 'base16-tomorrow-night t))
 #+END_SRC
 
-** Spaceline
-milkypostman's powerline wasn't doing it for me, so I used spacemacs' powerline, which seems to look nicer.
-#+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    :ensure t
-    :config
-    (require 'spaceline-config)
-    (spaceline-emacs-theme))
-#+END_SRC
-
 * Org
-A section dedicated to org-mode additions and configuration.
 *** Org bullets
-Makes the Org bullets nicer. Perhaps to actually make Emacs more visually appealing.
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :ensure t
@@ -80,7 +62,6 @@ Makes the Org bullets nicer. Perhaps to actually make Emacs more visually appeal
 #+END_SRC
 * Generic keybindings
 ** Change undo to C-z
-   Who decided that it should be C-_? Whining aside, C-z is less taxing on my fingers.
 #+BEGIN_SRC emacs-lisp
   (global-unset-key "\C-z")
   (global-set-key "\C-z" 'undo)
