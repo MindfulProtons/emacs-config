@@ -67,14 +67,31 @@ Since this is a literal *window manager* (seriously, I'm still impressed that em
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
-** Generic keybindings
+** Keybindings
 *** Change undo to C-z
 #+BEGIN_SRC emacs-lisp
   (global-unset-key "\C-z")
   (global-set-key "\C-z" 'undo)
 #+END_SRC
 
-** Reload configuration
+*** Window movement
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "s-<left>") 'windmove-left)
+  (global-set-key (kbd "s-<right>") 'windmove-right)
+  (global-set-key (kbd "s-<up>") 'windmove-up)
+  (global-set-key (kbd "s-<down>") 'windmove-down)
+#+END_SRC
+*** Move buffers around
+#+BEGIN_SRC emacs-lisp
+  (use-package buffer-move
+    :ensure t
+    :bind (("s-S-<left>" . 'buf-move-left)
+	   ("s-S-<right>" . 'buf-move-right)
+	   ("s-S-<up>" . 'buf-move-up)
+	   ("s-S-<down>" . 'buf-move-down)))
+	 
+#+END_SRC
+*** Reload configuration
 #+BEGIN_SRC emacs-lisp
   (defun config-reload ()
     (interactive)
