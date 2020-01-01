@@ -176,7 +176,7 @@ Make sure to have a ~/.authinfo file to login to ERC.
 "Connect to Freenode, with Emacs."
 (interactive)
 (erc-tls :server "irc.freenode.net" :port 6697 
-:nick "protons_")
+:nick "yournickhere")
 (setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#exwm"))))
 
 #+END_SRC
