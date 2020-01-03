@@ -34,7 +34,6 @@ Make sure to have a ~/.authinfo file to login to ERC.
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
-** Visual additions
 *** Removing ugly toolbar, scrollbar, and menubar from GUI
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
@@ -47,6 +46,11 @@ Make sure to have a ~/.authinfo file to login to ERC.
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
+*** Replace selection with newly-typed text
+#+BEGIN_SRC emacs-lisp
+  (delete-selection-mode +1)
+#+END_SRC
+** Visual additions
 *** Font
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
@@ -61,6 +65,11 @@ Make sure to have a ~/.authinfo file to login to ERC.
     (load-theme 'gotham t))
 
 #+END_SRC
+*** Time display in modeline
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-24hr-format 1)
+  (display-time-mode)
+#+END_SRC
 ** Org
 *** Org bullets
 #+BEGIN_SRC emacs-lisp
@@ -69,7 +78,7 @@ Make sure to have a ~/.authinfo file to login to ERC.
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
-** Keybindings
+** Keybindings/window movement packages
 *** Change undo to C-z
 #+BEGIN_SRC emacs-lisp
   (global-unset-key "\C-z")
@@ -89,6 +98,7 @@ Make sure to have a ~/.authinfo file to login to ERC.
     (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
   (global-set-key (kbd "C-c r") 'config-reload)
 #+END_SRC
+*** Window
 ** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -106,13 +116,12 @@ Make sure to have a ~/.authinfo file to login to ERC.
     (exwm-systemtray-enable)
     (setq exwm-workspace-number 10)
     (setq exwm-randr-workspace-output-plist '(0 "HDMI-A-0" 1 "HDMI-A-0" 2 "HDMI-A-0" 3 "HDMI-A-0" 4 "HDMI-A-0" 5 "DVI-D-0" 6 "DVI-D-0" 7 "DVI-D-0" 8 "DVI-D-0" 9 "DVI-D-0"))
-    (display-time-mode 1)
     ;; Bindings
     (exwm-input-set-key (kbd "s-r") #'exwm-reset)
     (exwm-input-set-key (kbd "s-k") #'exwm-workspace-delete)
     (exwm-input-set-key (kbd "s-w") #'exwm-workspace-swap)
-
-    ;; Bindings for window movement
+    
+    ;; Bindings for window movement/window resize
     (setq exwm-input-global-keys
       `((,(kbd "s-<up>") . windmove-up)
         (,(kbd "s-<down>") . windmove-down)
@@ -175,8 +184,7 @@ Make sure to have a ~/.authinfo file to login to ERC.
 (defun start-irc ()
 "Connect to Freenode, with Emacs."
 (interactive)
-(erc-tls :server "irc.freenode.net" :port 6697 
-:nick "yournickhere")
+(erc-tls :server "irc.freenode.net" :port 6697)
 (setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#exwm"))))
 
 #+END_SRC
