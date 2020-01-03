@@ -7,8 +7,12 @@ Since this is a literal *window manager* (seriously, I'm still impressed that em
 - =ttf-iosevka=, default font specified in the config, change it in the config for your preferred font of choice.
 *** Telega.el
 - =telegram-tdlib=, available in the AUR.
-*** Miscellaneous
-Make sure to have a ~/.authinfo file to login to ERC.
+*** ERC
+Make sure to have a ~/.authinfo file to login to ERC. It can be constructed like this:
+#+BEGIN_SRC 
+machine irc.server.net login "username" password "password"
+#+END_SRC
+Replace "username" and "password" with your IRC username and password.
 ** General Emacs settings
 *** Removing backup files and autosave
 #+BEGIN_SRC emacs-lisp
@@ -98,7 +102,6 @@ Make sure to have a ~/.authinfo file to login to ERC.
     (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
   (global-set-key (kbd "C-c r") 'config-reload)
 #+END_SRC
-*** Window
 ** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -106,6 +109,7 @@ Make sure to have a ~/.authinfo file to login to ERC.
     :bind ("C-x g" . 'magit-status))
 #+END_SRC
 ** EXWM
+Remove this section if you don't want to use Emacs as a full window manager. It also removes a number of window movement keybindings dependent on the super key not being used by another WM.
 #+BEGIN_SRC emacs-lisp
   (use-package exwm
     :ensure t
@@ -176,15 +180,14 @@ Make sure to have a ~/.authinfo file to login to ERC.
     :ensure t)
 #+END_SRC
 ** ERC
+This sets up an IRC client, ERC, connecting to freenode, as well as autojoining #emacs and #exwm. Make sure to replace "username" with your username.
 #+BEGIN_SRC emacs-lisp
-
 (setq auth-sources '("~/.authinfo"))
 (setq erc-prompt-for-password nil)
 ;; Keybindings
 (defun start-irc ()
 "Connect to Freenode, with Emacs."
 (interactive)
-(erc-tls :server "irc.freenode.net" :port 6697)
+(erc-tls :server "irc.freenode.net" :port 6697 :nick "username")
 (setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#exwm"))))
-
 #+END_SRC
