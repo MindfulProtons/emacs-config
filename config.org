@@ -38,11 +38,10 @@ Replace "username" and "password" with your IRC username and password.
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
-*** Removing ugly toolbar, scrollbar, and menubar from GUI
+*** Removing ugly toolbar and menubar from GUI, disabling fringes
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-  (scroll-bar-mode -1)
 #+END_SRC
 
 *** Setting line numbers to run solely in programming modes
@@ -69,11 +68,6 @@ Replace "username" and "password" with your IRC username and password.
     (load-theme 'gotham t))
 
 #+END_SRC
-*** Time display in modeline
-#+BEGIN_SRC emacs-lisp
-  (setq display-time-24hr-format 1)
-  (display-time-mode)
-#+END_SRC
 ** Org
 *** Org bullets
 #+BEGIN_SRC emacs-lisp
@@ -82,18 +76,13 @@ Replace "username" and "password" with your IRC username and password.
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
 #+END_SRC
-** Keybindings/window movement packages
+** Keybindings
 *** Change undo to C-z
 #+BEGIN_SRC emacs-lisp
   (global-unset-key "\C-z")
   (global-set-key "\C-z" 'undo)
 #+END_SRC
 
-#+END_SRC
-*** Move buffers around
-#+BEGIN_SRC emacs-lisp
-  (use-package buffer-move
-    :ensure t)
 #+END_SRC
 *** Reload configuration
 #+BEGIN_SRC emacs-lisp
@@ -107,72 +96,6 @@ Replace "username" and "password" with your IRC username and password.
   (use-package magit
     :ensure t
     :bind ("C-x g" . 'magit-status))
-#+END_SRC
-** EXWM
-Remove this section if you don't want to use Emacs as a full window manager. It also removes a number of window movement keybindings dependent on the super key not being used by another WM.
-#+BEGIN_SRC emacs-lisp
-  (use-package exwm
-    :ensure t
-    :config
-    (require 'exwm-config)
-    (require 'exwm-randr)
-    (require 'exwm-systemtray)
-    (exwm-systemtray-enable)
-    (setq exwm-workspace-number 10)
-    (setq exwm-randr-workspace-output-plist '(0 "HDMI-A-0" 1 "HDMI-A-0" 2 "HDMI-A-0" 3 "HDMI-A-0" 4 "HDMI-A-0" 5 "DVI-D-0" 6 "DVI-D-0" 7 "DVI-D-0" 8 "DVI-D-0" 9 "DVI-D-0"))
-    ;; Bindings
-    (exwm-input-set-key (kbd "s-r") #'exwm-reset)
-    (exwm-input-set-key (kbd "s-k") #'exwm-workspace-delete)
-    (exwm-input-set-key (kbd "s-w") #'exwm-workspace-swap)
-    
-    ;; Bindings for window movement/window resize
-    (setq exwm-input-global-keys
-      `((,(kbd "s-<up>") . windmove-up)
-        (,(kbd "s-<down>") . windmove-down)
-        (,(kbd "s-<left>") . windmove-left)
-        (,(kbd "s-<right>") . windmove-right)
-	(,(kbd "s-S-<up>") . buf-move-up)
-	(,(kbd "s-S-<down>") . buf-move-down)
-	(,(kbd "s-S-<left>") . buf-move-left)
-	(,(kbd "s-S-<right>") . buf-move-right)))
-
-    (dotimes (i 10)
-      (exwm-input-set-key (kbd (format "s-%d" i))
-			  `(lambda ()
-			     (interactive)
-			     (exwm-workspace-switch-create ,i))))
-    (exwm-input-set-key (kbd "s-d")
-			(lambda (command)
-			  (interactive (list (read-shell-command "$ ")))
-			  (start-process-shell-command command nil command)))
-
- 
-    (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-
-    (exwm-input-set-simulation-keys
-       '(
-	 ;; movement
-	 ([?\C-b] . left)
-	 ([?\M-b] . C-left)
-	 ([?\C-f] . right)
-	 ([?\M-f] . C-right)
-	 ([?\C-p] . up)
-	 ([?\C-n] . down)
-	 ([?\C-a] . home)
-	 ([?\C-e] . end)
-	 ([?\M-v] . prior)
-	 ([?\C-v] . next)
-	 ([?\C-d] . delete)
-	 ([?\C-k] . (S-end delete))
-	 ;; cut/paste
-	 ([?\C-w] . ?\C-x)
-	 ([?\M-w] . ?\C-c)
-	 ([?\C-y] . ?\C-v)
-	 ;; search
-	 ([?\C-s] . ?\C-f)))
-
-    (exwm-enable)
-    (exwm-randr-enable))
 #+END_SRC
 ** Telega.el
 #+BEGIN_SRC emacs-lisp
@@ -188,6 +111,6 @@ This sets up an IRC client, ERC, connecting to freenode, as well as autojoining 
 (defun start-irc ()
 "Connect to Freenode, with Emacs."
 (interactive)
-(erc-tls :server "irc.freenode.net" :port 6697 :nick "username")
+(erc-tls :server "irc.freenode.net" :port 6697 :nick "protons_")
 (setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#exwm"))))
 #+END_SRC
