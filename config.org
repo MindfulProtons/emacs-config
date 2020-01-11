@@ -111,6 +111,6 @@ This sets up an IRC client, ERC, connecting to freenode, as well as autojoining 
 (defun start-irc ()
 "Connect to Freenode, with Emacs."
 (interactive)
-(erc-tls :server "irc.freenode.net" :port 6697 :nick "protons_")
+(erc-tls :server "irc.freenode.net" :port 6697 :nick "username")
 (setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#exwm"))))
 #+END_SRC
