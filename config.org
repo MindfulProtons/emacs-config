@@ -1,116 +1,132 @@
 #+TITLE: Proton's Emacs Configuration
-** Dependencies
-*** EXWM
-Since this is a literal *window manager* (seriously, I'm still impressed that emacs can do this), you need the following:
-- =xorg-server=
-- =alsa-utils=, to control the audio
-- =ttf-iosevka=, default font specified in the config, change it in the config for your preferred font of choice.
-*** Telega.el
-- =telegram-tdlib=, available in the AUR.
-*** ERC
-Make sure to have a ~/.authinfo file to login to ERC. It can be constructed like this:
-#+BEGIN_SRC 
-machine irc.server.net login "username" password "password"
-#+END_SRC
-Replace "username" and "password" with your IRC username and password.
-** General Emacs settings
-*** Removing backup files and autosave
+** Dependencies for installation
+In order for LSP functionality to work, you want to install the [[https://github.com/emacs-lsp/lsp-mode#supported-languages][LSP servers]] listed on the =lsp-mode= repository.
+** Configuration of built-in features
+*** Autosave and backup file settings
+This sets up autosave and backup files to save in specific directories, rather than being scattered across the file system.
 #+BEGIN_SRC emacs-lisp
-  (setq make-backup-files nil)
-  (setq auto-save-default nil)
+  (setq backup-directory-alist          
+	  `((".*" . ,"~/.emacs.d/backups/")))    
+  (setq auto-save-file-name-transforms          
+	  `((".*" ,"~/.emacs.d/autosaves/" t)))
 #+END_SRC
-
-*** Inhibiting the startup screen
+*** Remove the startup screen
+This removes the useless startup screen in Emacs. It'll be replaced with [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashboard]].
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t)
 #+END_SRC
-
-*** Adding an alias for yes/no prompts, setting bash as the default shell
+*** Interpret a new alias for yes/no
+This simple line allows for yes/no to be answered with y/n. Saves a bit of time.
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+*** Set =bash= as the default shell in the terminal
+Set your own default shell here for M-x term. It's a nice terminal for most uses.
+#+BEGIN_SRC emacs-lisp
   (defvar default-shell "/bin/bash")
   (defadvice term (before force-bash)
     (interactive (list default-shell)))
   (ad-activate 'term)
 #+END_SRC
-
-*** More comfortable line-by-line scrolling
+*** Line-by-line scrolling
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
-*** Removing ugly toolbar and menubar from GUI, disabling fringes
+*** Removing bars
+I remove the toolbar and menubar so as to have less useless elements clutter the screen.
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 #+END_SRC
-
-*** Setting line numbers to run solely in programming modes
+*** Line numbers in programming modes
+By default, Emacs doesn't enable line numbers with =(global-display-line-numbers-mode)=. Neither do I, as it isn't really useful for modes outside of programming modes. So, I just enable it for programming modes, and leave it off for others.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
-
-*** Replace selection with newly-typed text
+*** Replace functionality fix
+By default, Emacs doesn't replace text that you've selected with newly typed text. With this line, text that is selected is deleted, then the new text being typed appears in its place.
 #+BEGIN_SRC emacs-lisp
   (delete-selection-mode +1)
 #+END_SRC
-** Visual additions
-*** Font
+*** Font setting
+This sets up =iosevka= as the font of choice. You can replace it with whatever font you want.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
 	       '(font . "Iosevka-10"))
 #+END_SRC
-
-*** Gotham
+*** Change undo binding
+For this, I unset the default binding for =C-z= (which is to suspend an emacs frame) and set it to be 
+undo like most other programs.
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key "\C-z")
+  (global-set-key "\C-z" 'undo)
+#+END_SRC
+** Packages
+In this configuration, I use =use-package= to automatically install the packages,
+ as well as to setup their configurations.
+*** Visuals
+**** Org bullets
+This sets up some nice bullets for org-mode that look better than the default star characters used in Emacs.
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+#+END_SRC
+**** Gotham
+This installs the [[https://github.com/wasamasa/gotham-theme][gotham-theme]], which is a really nice dark theme for Emacs and other editors/terminals.
 #+BEGIN_SRC emacs-lisp
   (use-package gotham-theme
     :ensure t
     :config
     (load-theme 'gotham t))
-
 #+END_SRC
-** Org
-*** Org bullets
+**** Dashboard
+This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashboard]], which is a far more customizable and better startup screen than the default.
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
+  (use-package dashboard
+    :ensure t
+    :init
+    (setq dashboard-set-footer nil)
+    (setq dashboard-startup-banner 'logo)
+    :config
+    (dashboard-setup-startup-hook))
+#+END_SRC
+*** Programming-related functionality
+**** =lsp= completion
+This installs [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]], which adds IDE-like functionality to Emacs for certain languages through language servers. It also installs [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]], which adds some extra UI functionality that interfaces with =lsp-mode=.
+Completion is provided by [[http://company-mode.github.io/][company]], and the [[https://github.com/tigersoldier/company-lsp][company-lsp]] plugin for company to interface with LSP.
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    :commands lsp
+    :init
+    (setq lsp-keymap-prefix "s-l")
+    :hook
+    (prog-mode . lsp))
+
+  (use-package lsp-ui
+    :ensure t
+    :hook
+    (lsp-mode . lsp-ui-mode)
+    :config
+    (set-face-attribute 'lsp-ui-doc-background nil :background "#0c1014"))
+
+  (use-package company
+    :ensure t
+    :hook
+    (prog-mode . company-mode))
+
+  (use-package company-lsp
     :ensure t
     :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+    (push 'company-lsp company-backends))
 #+END_SRC
-** Keybindings
-*** Change undo to C-z
-#+BEGIN_SRC emacs-lisp
-  (global-unset-key "\C-z")
-  (global-set-key "\C-z" 'undo)
-#+END_SRC
-
-#+END_SRC
-*** Reload configuration
-#+BEGIN_SRC emacs-lisp
-  (defun config-reload ()
-    (interactive)
-    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
-  (global-set-key (kbd "C-c r") 'config-reload)
-#+END_SRC
-** Magit
+**** Magit
+This installs a package called [[https://github.com/magit/magit][magit]], which allows you to use git within emacs itself. It also configures 
+the bindings for =magit-status=, so one can do all the operations 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
-    :bind ("C-x g" . 'magit-status))
-#+END_SRC
-** Telega.el
-#+BEGIN_SRC emacs-lisp
-  (use-package telega
-    :ensure t)
-#+END_SRC
-** ERC
-This sets up an IRC client, ERC, connecting to freenode, as well as autojoining #emacs and #exwm. Make sure to replace "username" with your username.
-#+BEGIN_SRC emacs-lisp
-(setq auth-sources '("~/.authinfo"))
-(setq erc-prompt-for-password nil)
-;; Keybindings
-(defun start-irc ()
-"Connect to Freenode, with Emacs."
-(interactive)
-(erc-tls :server "irc.freenode.net" :port 6697 :nick "username")
-(setq erc-autojoin-channels-alist '(("freenode.net" "#emacs" "#exwm"))))
+    :bind ("C-x g" . magit-status))
 #+END_SRC
