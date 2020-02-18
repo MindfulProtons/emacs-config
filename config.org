@@ -75,8 +75,8 @@ This sets up some nice bullets for org-mode that look better than the default as
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
       :ensure t
-      :config
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+      :hook 
+      (org-mode . org-bullets-mode))
 #+END_SRC
 **** Gotham
 This installs the [[https://github.com/wasamasa/gotham-theme][gotham-theme]], which is a really nice dark theme for Emacs and other editors/terminals.
@@ -91,9 +91,9 @@ This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashbo
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
     :ensure t
-    :init
-    (setq dashboard-set-footer nil)
-    (setq dashboard-startup-banner 'logo)
+    :custom
+    (dashboard-set-footer nil)
+    (dashboard-startup-banner 'logo)
     :config
     (dashboard-setup-startup-hook))
 #+END_SRC
@@ -114,8 +114,8 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
     :ensure t
     :hook
     (lsp-mode . lsp-ui-mode)
-    :config
-    (set-face-attribute 'lsp-ui-doc-background nil :background "#0c1014"))
+    :custom-face
+    (lsp-ui-doc-background ((nil (:background "#0c1014")))))
 
   (use-package company
     :ensure t
