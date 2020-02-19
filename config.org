@@ -117,6 +117,12 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
     :custom-face
     (lsp-ui-doc-background ((nil (:background "#0c1014")))))
 
+  (use-package lsp-java
+    :ensure t
+    :after lsp
+    :hook
+    (java-mode . lsp))
+
   (use-package company
     :ensure t
     :hook
