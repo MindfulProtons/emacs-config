@@ -38,10 +38,11 @@ I remove the toolbar and menubar so as to have less useless elements clutter the
   (tool-bar-mode -1)
   (menu-bar-mode -1)
 #+END_SRC
-*** Line numbers in programming modes
+*** Programming mode-related tweaks
 By default, Emacs doesn't enable line numbers with =(global-display-line-numbers-mode)=. Neither do I, as it isn't really useful for modes outside of programming modes. So, I just enable it for programming modes, and leave it off for others.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook 'hl-line-mode)
 #+END_SRC
 *** Replace functionality fix
 By default, Emacs doesn't replace text that you've selected with newly typed text. With this line, text that is selected is deleted, then the new text being typed appears in its place.
@@ -78,13 +79,13 @@ This sets up some nice bullets for org-mode that look better than the default as
       :hook 
       (org-mode . org-bullets-mode))
 #+END_SRC
-**** Gotham
-This installs the [[https://github.com/wasamasa/gotham-theme][gotham-theme]], which is a really nice dark theme for Emacs and other editors/terminals.
+**** Gruvbox
+This installs the [[https://github.com/Greduan/emacs-theme-gruvbox][gruvbox-theme]], which is a really nice dark theme for Emacs and other editors/terminals.
 #+BEGIN_SRC emacs-lisp
-  (use-package gotham-theme
+  (use-package gruvbox-theme
     :ensure t
     :config
-    (load-theme 'gotham t))
+    (load-theme 'gruvbox-dark-hard t))
 #+END_SRC
 **** Dashboard
 This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashboard]], which is a far more customizable and better startup screen than the default.
@@ -107,8 +108,10 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
     :commands lsp
     :init
     (setq lsp-keymap-prefix "s-l")
+    :custom
+    (lsp-prefer-capf t)
     :hook
-    (prog-mode . lsp))
+    (prog-mode . lsp-deferred))
 
   (use-package lsp-ui
     :ensure t
@@ -127,11 +130,6 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
     :ensure t
     :hook
     (prog-mode . company-mode))
-
-  (use-package company-lsp
-    :ensure t
-    :config
-    (push 'company-lsp company-backends))
 #+END_SRC
 **** Magit
 This installs a package called [[https://github.com/magit/magit][magit]], which allows you to use git within emacs itself. It also configures 
