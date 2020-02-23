@@ -39,7 +39,10 @@ I remove the toolbar and menubar so as to have less useless elements clutter the
   (menu-bar-mode -1)
 #+END_SRC
 *** Programming mode-related tweaks
-By default, Emacs doesn't enable line numbers with =(global-display-line-numbers-mode)=. Neither do I, as it isn't really useful for modes outside of programming modes. So, I just enable it for programming modes, and leave it off for others.
+By default, Emacs doesn't enable line numbers with =(global-display-line-numbers-mode)=. 
+Neither would I, as it isn't really useful for modes outside of programming modes. 
+So, I just enable it for programming modes, and leave it off for others.
+I also enable =hl-line-mode= for highlighting the current line for visiblity.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook 'hl-line-mode)
