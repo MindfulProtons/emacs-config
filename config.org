@@ -105,11 +105,9 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
     :ensure t
-    :commands lsp
+    :commands (lsp lsp-deferred)
     :init
     (setq lsp-keymap-prefix "s-l")
-    :custom
-    (lsp-prefer-capf t)
     :hook
     (prog-mode . lsp-deferred))
 
@@ -129,7 +127,15 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
   (use-package company
     :ensure t
     :hook
-    (prog-mode . company-mode))
+    (prog-mode . company-mode)
+    :config
+    ;; recommended settings by lsp-mode
+    (setq company-minimum-prefix-length 1
+	  company-idle-delay 0.0))
+
+  (use-package company-lsp
+    :ensure t
+    :commands company-lsp)
 #+END_SRC
 **** Magit
 This installs a package called [[https://github.com/magit/magit][magit]], which allows you to use git within emacs itself. It also configures 
