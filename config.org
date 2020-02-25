@@ -3,12 +3,10 @@
 In order for LSP functionality to work, you want to install the [[https://github.com/emacs-lsp/lsp-mode#supported-languages][LSP servers]] listed on the =lsp-mode= repository.
 ** Configuration of built-in features
 *** Autosave and backup file settings
-This sets up autosave and backup files to save in specific directories, rather than being scattered across the file system.
+This disables Emacs's default autosave and backup files.
 #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist          
-	  `((".*" . ,"~/.emacs.d/backups/")))    
-  (setq auto-save-file-name-transforms          
-	  `((".*" ,"~/.emacs.d/autosaves/" t)))
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
 #+END_SRC
 *** Remove the startup screen
 This removes the useless startup screen in Emacs. It'll be replaced with [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashboard]].
