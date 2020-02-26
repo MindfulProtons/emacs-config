@@ -76,7 +76,6 @@ as well as to setup their configurations.
 This sets up some nice bullets for org-mode that look better than the default asterisks used in Emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-      :ensure t
       :hook 
       (org-mode . org-bullets-mode))
 #+END_SRC
@@ -84,7 +83,6 @@ This sets up some nice bullets for org-mode that look better than the default as
 This installs the [[https://github.com/Greduan/emacs-theme-gruvbox][gruvbox-theme]], which is a really nice dark theme for Emacs and other editors/terminals.
 #+BEGIN_SRC emacs-lisp
   (use-package gruvbox-theme
-    :ensure t
     :config
     (load-theme 'gruvbox-dark-hard t))
 #+END_SRC
@@ -92,7 +90,6 @@ This installs the [[https://github.com/Greduan/emacs-theme-gruvbox][gruvbox-them
 This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashboard]], which is a far more customizable and better startup screen than the default.
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
-    :ensure t
     :custom
     (dashboard-set-footer nil)
     (dashboard-startup-banner 'logo)
@@ -105,7 +102,6 @@ This installs [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]], which adds ID
 Completion is provided by [[http://company-mode.github.io/][company]], and the [[https://github.com/tigersoldier/company-lsp][company-lsp]] plugin for company to interface with LSP.
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
-    :ensure t
     :commands (lsp lsp-deferred)
     :init
     (setq lsp-keymap-prefix "s-l")
@@ -113,20 +109,17 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
     (prog-mode . lsp-deferred))
 
   (use-package lsp-ui
-    :ensure t
     :hook
     (lsp-mode . lsp-ui-mode)
     :custom-face
-    (lsp-ui-doc-background ((nil (:background "#0c1014")))))
+    (lsp-ui-doc-background ((nil (:background "#1d2021")))))
 
   (use-package lsp-java
-    :ensure t
     :after lsp
     :hook
     (java-mode . lsp))
 
   (use-package company
-    :ensure t
     :hook
     (prog-mode . company-mode)
     :config
@@ -135,7 +128,7 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
 	  company-idle-delay 0.0))
 
   (use-package company-lsp
-    :ensure t
+    :defer t
     :commands company-lsp)
 #+END_SRC
 **** Magit
@@ -143,6 +136,5 @@ This installs a package called [[https://github.com/magit/magit][magit]], which 
 the bindings for =magit-status=, so one can actually use magit with its own seperate buffer in emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t
     :bind ("C-x g" . magit-status))
 #+END_SRC
