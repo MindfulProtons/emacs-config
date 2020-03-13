@@ -1,6 +1,7 @@
 #+TITLE: Proton's Emacs Configuration
 ** Dependencies for installation
 In order for LSP functionality to work, you want to install the [[https://github.com/emacs-lsp/lsp-mode#supported-languages][LSP servers]] listed on the =lsp-mode= repository.
+This config also requires emacs27+ to work correctly.
 ** Configuration of built-in features
 *** Autosave and backup file settings
 This disables Emacs's default autosave and backup files.
