@@ -19,10 +19,10 @@ This simple line allows for yes/no to be answered with y/n. Saves a bit of time.
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
-*** Set =bash= as the default shell in the terminal
+*** Set default shell in the terminal
 Set your own default shell here for M-x term. It's a nice terminal for most uses.
 #+BEGIN_SRC emacs-lisp
-  (defvar default-shell "/bin/bash")
+  (defvar default-shell "/bin/zsh")
   (defadvice term (before force-bash)
     (interactive (list default-shell)))
   (ad-activate 'term)
@@ -85,7 +85,7 @@ This installs the [[https://github.com/Greduan/emacs-theme-gruvbox][gruvbox-them
 #+BEGIN_SRC emacs-lisp
   (use-package gruvbox-theme
     :config
-    (load-theme 'gruvbox-dark-hard t))
+    (load-theme 'gruvbox-dark-medium t))
 #+END_SRC
 **** Dashboard
 This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashboard]], which is a far more customizable and better startup screen than the default.
@@ -138,4 +138,21 @@ the bindings for =magit-status=, so one can actually use magit with its own sepe
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :bind ("C-x g" . magit-status))
+#+END_SRC
+*** Media/other desktop functionality
+**** EMMS
+#+BEGIN_SRC emacs-lisp
+  (use-package emms
+    :straight (emms :type git :repo "https://git.savannah.gnu.org/git/emms.git")
+    :config
+    (require 'emms-setup)
+    (require 'emms-player-mpd)
+    (emms-all)
+    :custom
+    (emms-seek-seconds 5)
+    (emms-player-list '(emms-player-mpd))
+    (emms-info-functions '(emms-info-mpd))
+    (emms-player-mpd-server-name "localhost")
+    (emms-player-mpd-server-port "6600")
+    (emms-source-file-default-directory "~/Music/"))
 #+END_SRC
