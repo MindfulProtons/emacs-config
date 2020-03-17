@@ -97,6 +97,14 @@ This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashbo
     :config
     (dashboard-setup-startup-hook))
 #+END_SRC
+**** Powerline
+This is a port of the popular [[https://github.com/milkypostman/powerline][Powerline]] modeline customization from Vim. It makes the modeline look a little nicer.
+#+BEGIN_SRC emacs-lisp
+  (use-package powerline
+    :straight (:type git :host github :repo "milkypostman/powerline")
+    :config
+    (powerline-default-theme))
+#+END_SRC
 *** Programming-related functionality
 **** =lsp= completion
 This installs [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]], which adds IDE-like functionality to Emacs for certain languages through language servers. It also installs [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]], which adds some extra UI functionality that interfaces with =lsp-mode=.
