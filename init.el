@@ -25,4 +25,4 @@
 (straight-use-package 'use-package)
 
 ;; loads my config file from config.org
-(org-babel-load-file (expand-file-name "~/.config/emacs/config.org"))
+(org-babel-load-file (expand-file-name (concat user-emacs-directory "config.org")))
