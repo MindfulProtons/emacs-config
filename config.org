@@ -105,6 +105,7 @@ This is a port of the popular [[https://github.com/milkypostman/powerline][Power
     (powerline-default-theme))
 #+END_SRC
 **** smart-mode-line
+[[https://github.com/Malabarba/smart-mode-line/][smart-mode-line]] is a customization package designed to add colors and other niceties to the modeline.
 #+BEGIN_SRC emacs-lisp
   (use-package smart-mode-line
     :config
@@ -165,6 +166,7 @@ This updates Org to the development version, for the latest fixes.
 #+END_SRC
 *** Media/other desktop functionality
 **** EMMS
+[[https://www.gnu.org/software/emms/][EMMS]] is a multimedia system for Emacs. However, I use it as an MPD client, to interface with my already existing MPD instance on my PC.
 #+BEGIN_SRC emacs-lisp
   (use-package emms
     :straight (emms :type git :repo "https://git.savannah.gnu.org/git/emms.git")
