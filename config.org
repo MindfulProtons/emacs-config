@@ -101,10 +101,18 @@ This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashbo
 This is a port of the popular [[https://github.com/milkypostman/powerline][Powerline]] modeline customization from Vim. It makes the modeline look a little nicer.
 #+BEGIN_SRC emacs-lisp
   (use-package powerline
-    :straight (:type git :host github :repo "milkypostman/powerline")
     :config
     (powerline-default-theme))
 #+END_SRC
+**** smart-mode-line
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-mode-line
+    :config
+    (sml/setup))
+
+  (use-package smart-mode-line-powerline-theme)
+#+END_SRC
+
 *** Programming-related functionality
 **** =lsp= completion
 This installs [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]], which adds IDE-like functionality to Emacs for certain languages through language servers. It also installs [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]], which adds some extra UI functionality that interfaces with =lsp-mode=.
@@ -147,6 +155,14 @@ the bindings for =magit-status=, so one can actually use magit with its own sepe
   (use-package magit
     :bind ("C-x g" . magit-status))
 #+END_SRC
+**** Org
+This updates Org to the development version, for the latest fixes.
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :straight (org :repo "https://code.orgmode.org/bzg/org-mode.git")
+    :config
+    (require 'org-tempo))
+#+END_SRC
 *** Media/other desktop functionality
 **** EMMS
 #+BEGIN_SRC emacs-lisp
@@ -163,4 +179,14 @@ the bindings for =magit-status=, so one can actually use magit with its own sepe
     (emms-player-mpd-server-name "localhost")
     (emms-player-mpd-server-port "6600")
     (emms-source-file-default-directory "~/Music/"))
+#+END_SRC
+*** Startup fixes
+**** GCMH
+[[https://gitlab.com/koral/gcmh/][The Garbage Collection Magic Hack]] is a very useful tool to reduce startup time for Emacs by allowing the garbage collection to run when Emacs is idle.
+#+BEGIN_SRC emacs-lisp
+  (use-package gcmh
+    :straight (gcmh :repo "https://gitlab.com/koral/gcmh.git")
+    :config 
+    (require 'gcmh)
+    (gcmh-mode 1))
 #+END_SRC
