@@ -154,12 +154,14 @@ This installs a package called [[https://github.com/magit/magit][magit]], which 
 the bindings for =magit-status=, so one can actually use magit with its own seperate buffer in emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+    :defer t
     :bind ("C-x g" . magit-status))
 #+END_SRC
 **** Org
 This updates Org to the development version, for the latest fixes.
 #+BEGIN_SRC emacs-lisp
   (use-package org
+    :defer t
     :straight (org :repo "https://code.orgmode.org/bzg/org-mode.git")
     :config
     (require 'org-tempo))
@@ -169,6 +171,7 @@ This updates Org to the development version, for the latest fixes.
 [[https://www.gnu.org/software/emms/][EMMS]] is a multimedia system for Emacs. However, I use it as an MPD client, to interface with my already existing MPD instance on my PC.
 #+BEGIN_SRC emacs-lisp
   (use-package emms
+    :defer t
     :straight (emms :type git :repo "https://git.savannah.gnu.org/git/emms.git")
     :config
     (require 'emms-setup)
