@@ -15,12 +15,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq package-enable-at-startup nil)
-
-;; scroll-bar and fringe mode disabled
-(scroll-bar-mode -1)
-(set-fringe-mode 0)
-
 ;; sets up use-package
 (straight-use-package 'use-package)
 
