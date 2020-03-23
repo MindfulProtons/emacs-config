@@ -1,6 +1,7 @@
 ;; bootstraps straight.el (https://github.com/raxod502/straight.el) and sets use-package up to use straight.
 
 (setq straight-use-package-by-default t)
+(setq straight-check-for-modifications '(check-on-save))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
