@@ -190,7 +190,7 @@ This updates Org to the development version, for the latest fixes.
 [[https://gitlab.com/koral/gcmh/][The Garbage Collection Magic Hack]] is a very useful tool to reduce startup time for Emacs by allowing the garbage collection to run when Emacs is idle.
 #+BEGIN_SRC emacs-lisp
   (use-package gcmh
-    :straight (gcmh :repo "https://gitlab.com/koral/gcmh.git")
+    :straight (gcmh :host gitlab :repo "koral/gcmh")
     :config 
     (require 'gcmh)
     (gcmh-mode 1))
