@@ -83,6 +83,13 @@ This fixes the prompt being removable from =M-x shell= by backspacing.
 #+BEGIN_SRC emacs-lisp
   (setq comint-prompt-read-only t)
 #+END_SRC
+*** Making an entire region uppercase
+For some reason, Emacs by default removes the ability to capitalize regions in their
+entirety, in the name of making the editor less confusing for new users. However,
+I want this functionality, and so I re-enable it.
+#+BEGIN_SRC emacs-lisp
+  (put 'upcase-region 'disabled nil)
+#+END_SRC
 ** Packages
 In this configuration, I use =use-package= to automatically install the packages, 
 as well as to setup their configurations.
