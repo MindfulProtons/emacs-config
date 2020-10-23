@@ -2,6 +2,20 @@
 ** Dependencies for installation
 In order for LSP functionality to work, you want to install the [[https://github.com/emacs-lsp/lsp-mode#supported-languages][LSP servers]] listed on the =lsp-mode= repository.
 This config also requires emacs27+ to work correctly.
+** Custom variables
+These are variables that you can set in =M-x customize=. You can also just change them from the config file itself.
+#+BEGIN_SRC emacs-lisp
+  (defgroup proton
+    nil
+    "Configuration options for Proton's Emacs configuration."
+    :group 'local)
+
+  (defcustom proton-window-manager
+    nil
+    "Whether or not Emacs is used as a window manager."
+    :type 'boolean
+    :group 'proton)
+#+END_SRC
 ** Configuration of built-in features
 *** Autosave and backup file settings
 This disables Emacs's default autosave and backup files.
@@ -191,6 +205,51 @@ This updates Org to the development version, for the latest fixes.
     (emms-player-mpd-server-name "localhost")
     (emms-player-mpd-server-port "6600")
     (emms-source-file-default-directory "~/Music/"))
+#+END_SRC
+**** EXWM
+[[https://github.com/ch11ng/exwm][EXWM]] is an X window manager implemented entirely within Emacs. It's quite handy.
+#+BEGIN_SRC emacs-lisp
+  (when (eq proton-window-manager t) 
+    (defun exwm-screenshot ()
+      (interactive)
+      (start-process-shell-command "python" nil "python ~/.scripts/screenshotter/screenshotter.py"))
+
+    (defun exwm-launch (command)
+      "Starts up an application in EXWM."
+      (interactive
+       (list (read-shell-command "$ ")))
+      (start-process-shell-command command nil command))
+
+    (use-package exwm
+      :if window-system
+      :straight (exwm :type git :host github :repo "ch11ng/exwm")
+      :init
+      (require 'exwm-randr)
+      :custom
+      (exwm-input-global-keys
+       `(([?\s-d] . exwm-launch)
+	 ([print] . exwm-screenshot)
+	 ([?\s-r] . exwm-reset)
+	 ([?\s-w] . exwm-workspace-switch)
+	 ,@(mapcar (lambda (i)
+		     `(,(kbd (format "s-%d" i)) .
+		       (lambda ()
+			 (interactive)
+			 (exwm-workspace-switch-create ,i))))
+		   (number-sequence 0 9))))
+      (exwm-workspace-number 10)
+      :config
+      (setq exwm-randr-workspace-output-plist '(0 "HDMI-A-0" 1 "HDMI-A-0" 2 "HDMI-A-0" 3 "HDMI-A-0" 4 "HDMI-A-0" 5 "DisplayPort-0" 6 "DisplayPort-0" 7 "DisplayPort-0" 8 "DisplayPort-0" 9 "DisplayPort-0"))
+      (exwm-enable)
+      (exwm-randr-enable))
+
+    (use-package windmove
+      :bind (("s-<left>" . windmove-left)
+	     ("s-<right>" . windmove-right)
+	     ("s-<up>" . windmove-up)
+	     ("s-<down>" . windmove-down))
+      :config
+      (windmove-default-keybindings 'meta)))
 #+END_SRC
 *** Startup fixes
 **** GCMH
