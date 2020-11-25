@@ -59,6 +59,8 @@ I also enable =hl-line-mode= for highlighting the current line for visiblity.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook 'hl-line-mode)
+  (add-hook 'conf-mode-hook 'display-line-numbers-mode)
+  (add-hook 'conf-mode-hook 'hl-line-mode)
 #+END_SRC
 *** Replace functionality fix
 By default, Emacs doesn't replace text that you've selected with newly typed text. With this line, text that is selected is deleted, then the new text being typed appears in its place.
@@ -194,6 +196,14 @@ This updates Org to the development version, for the latest fixes.
     :config
     (require 'org-tempo))
 #+END_SRC
+**** Flycheck
+[[https://github.com/flycheck/flycheck][Flycheck]] is a syntax checking package for Emacs, with tons of languages supported by default. It's quite
+handy for me, as I do programming relatively frequently, so having syntax checking constantly helps.
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :hook
+    (after-init . global-flycheck-mode))
+#+END_SRC
 *** Media/other desktop functionality
 **** EMMS
 [[https://www.gnu.org/software/emms/][EMMS]] is a multimedia system for Emacs. However, I use it as an MPD client, to interface with my already existing MPD instance on my PC.
@@ -267,4 +277,14 @@ This updates Org to the development version, for the latest fixes.
     :config 
     (require 'gcmh)
     (gcmh-mode 1))
+#+END_SRC
+*** Helm
+[[https://github.com/emacs-helm/helm/][Helm]] is a software package that adds better autocompletion to Emacs.
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :bind
+    ("M-x" . helm-M-x)
+    ("C-x C-f" . helm-find-files)
+    :config
+    (helm-mode 1))
 #+END_SRC
