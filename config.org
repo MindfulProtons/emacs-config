@@ -103,12 +103,43 @@ This sets up some nice bullets for org-mode that look better than the default as
       :hook 
       (org-mode . org-bullets-mode))
 #+END_SRC
-**** Nord theme
+**** Theme
 This installs the [[https://github.com/arcticicestudio/nord-emacs][nord-theme]], which is a really nice dark theme for Emacs and other editors/terminals.
 #+BEGIN_SRC emacs-lisp
-  (use-package nord-theme
+  (use-package base16-theme
     :config
-    (load-theme 'nord t))
+    (setq base16-theme-256-color-source colors)
+    (setq base16-distinct-fringe-background nil)
+    (load-theme 'base16-brewer t))
+
+  (defvar my:theme 'base16-brewer)
+  (defvar my:theme-window-loaded nil)
+  (defvar my:theme-terminal-loaded nil)
+
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions(lambda (frame)
+					    (select-frame frame)
+					    (if (window-system frame)
+						(unless my:theme-window-loaded
+						  (if my:theme-terminal-loaded
+						      (enable-theme my:theme)
+						    (load-theme my:theme t))
+						  (setq my:theme-window-loaded t)
+						  )
+					      (unless my:theme-terminal-loaded
+						(if my:theme-window-loaded
+						    (enable-theme my:theme)
+						  (load-theme my:theme t))
+						(setq my:theme-terminal-loaded t)
+						)
+					      )))
+
+    (progn
+      (load-theme my:theme t)
+      (if (display-graphic-p)
+	  (setq my:theme-window-loaded t)
+	(setq my:theme-terminal-loaded t)))
+    )
 #+END_SRC
 **** Dashboard
 This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashboard]], which is a far more customizable and better startup screen than the default.
@@ -120,7 +151,8 @@ This installs [[https://github.com/emacs-dashboard/emacs-dashboard][emacs-dashbo
     :config
     (dashboard-setup-startup-hook)
     (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t))
+    (setq dashboard-set-file-icons t)
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
 #+END_SRC
 **** Powerline
 This is a port of the popular [[https://github.com/milkypostman/powerline][Powerline]] modeline customization from Vim. It makes the modeline look a little nicer.
@@ -159,7 +191,9 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
     :hook
     (prog-mode . lsp-deferred)
     :config
-    (setq read-process-output-max (* 1024 1024)))
+    (setq read-process-output-max (* 1024 1024))
+    (setq lsp-enable-on-type-formatting nil)
+    (setq lsp-enable-indentation nil))
 
   ;; installs lsp ui
   (use-package lsp-ui
