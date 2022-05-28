@@ -241,10 +241,9 @@ the bindings for =magit-status=, so one can actually use magit with its own sepe
 This updates Org to the development version, for the latest fixes.
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :defer t
-    :straight (org :repo "https://code.orgmode.org/bzg/org-mode.git")
     :config
-    (require 'org-tempo))
+    (require 'org-tempo)
+    (add-hook 'org-mode-hook 'turn-on-flyspell))
 #+END_SRC
 **** Flycheck
 [[https://github.com/flycheck/flycheck][Flycheck]] is a syntax checking package for Emacs, with tons of languages supported by default. It's quite
