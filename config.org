@@ -71,7 +71,7 @@ By default, Emacs doesn't replace text that you've selected with newly typed tex
 This sets up =iosevka= as the font of choice. You can replace it with whatever font you want.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
-	       '(font . "Iosevka-10"))
+	       '(font . "Terminus-8"))
 #+END_SRC
 *** Change undo binding
 For this, I unset the default binding for =C-z= (which is to suspend an emacs frame) and set it to be 
@@ -242,7 +242,6 @@ This updates Org to the development version, for the latest fixes.
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :config
-    (require 'org-tempo)
     (add-hook 'org-mode-hook 'turn-on-flyspell))
 #+END_SRC
 **** Flycheck
