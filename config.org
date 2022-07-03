@@ -68,7 +68,7 @@ By default, Emacs doesn't replace text that you've selected with newly typed tex
   (delete-selection-mode +1)
 #+END_SRC
 *** Font setting
-This sets up =iosevka= as the font of choice. You can replace it with whatever font you want.
+This sets up =Terminus= as the font of choice. You can replace it with whatever font you want.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
 	       '(font . "Terminus-8"))
@@ -180,45 +180,14 @@ This is a port of the popular [[https://github.com/milkypostman/powerline][Power
 #+END_SRC
 *** Programming-related functionality
 **** =lsp= completion
-This installs [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]], which adds IDE-like functionality to Emacs for certain languages through language servers. It also installs [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]], which adds some extra UI functionality that interfaces with =lsp-mode=.
-Completion is provided by [[http://company-mode.github.io/][company]], and the [[https://github.com/tigersoldier/company-lsp][company-lsp]] plugin for company to interface with LSP.
+This installs [[https://github.com/joaotavora/eglot][eglot]], which adds IDE-like functionality to Emacs for certain languages through language servers. Completion is provided by [[http://company-mode.github.io/][company]].
 #+BEGIN_SRC emacs-lisp
-  ;; install lsp-mode.
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :init
-    (setq lsp-keymap-prefix "C-c l")
+  ;; install eglot
+  (use-package eglot
     :hook
-    (prog-mode . lsp-deferred)
-    :config
-    (setq read-process-output-max (* 1024 1024))
-    (setq lsp-enable-on-type-formatting nil)
-    (setq lsp-enable-indentation nil))
-
-  ;; installs lsp ui
-  (use-package lsp-ui
-    :hook
-    (lsp-mode . lsp-ui-mode)
-    :custom-face
-    (lsp-ui-doc-background ((nil (:background "#1d2021")))))
-
-  ;; java support
-  (use-package lsp-java
-    :after lsp
-    :hook
-    (java-mode . lsp))
-
-  ;; lsp python, support for python
-  (use-package lsp-python-ms
-    :ensure t
-    :init (setq lsp-python-ms-auto-install-server t)
-    :hook (python-mode . (lambda ()
-			    (require 'lsp-python-ms)
-			    (lsp-deferred))))  ; or lsp-deferred
-
-
-  ;; sets up helm support
-  (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+    (prog-mode . eglot-ensure)
+    (conf-mode . eglot-ensure)
+  )
 
   ;; sets up company
   (use-package company
@@ -227,7 +196,8 @@ Completion is provided by [[http://company-mode.github.io/][company]], and the [
     :config
     ;; recommended settings by lsp-mode
     (setq company-minimum-prefix-length 1
-	  company-idle-delay 0.0))
+	  company-idle-delay 0.0
+	  company-backends '((company-capf company-dabbrev-code))))
 #+END_SRC
 **** Magit
 This installs a package called [[https://github.com/magit/magit][magit]], which allows you to use git within emacs itself. It also configures 
@@ -236,13 +206,6 @@ the bindings for =magit-status=, so one can actually use magit with its own sepe
   (use-package magit
     :defer t
     :bind ("C-x g" . magit-status))
-#+END_SRC
-**** Org
-This updates Org to the development version, for the latest fixes.
-#+BEGIN_SRC emacs-lisp
-  (use-package org
-    :config
-    (add-hook 'org-mode-hook 'turn-on-flyspell))
 #+END_SRC
 **** Flycheck
 [[https://github.com/flycheck/flycheck][Flycheck]] is a syntax checking package for Emacs, with tons of languages supported by default. It's quite
